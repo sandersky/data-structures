@@ -1,5 +1,5 @@
 {
-  "name": "data-structures",
+  "name": "immutable-data-structures",
   "version": "0.0.0",
   "description": "",
   "main": "binary-search-tree.js",
