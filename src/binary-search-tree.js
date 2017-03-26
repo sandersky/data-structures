@@ -122,3 +122,28 @@ export function insert (value: any, tree: BinarySearchTree): BinarySearchTree {
 
   return newTree
 }
+
+/**
+ * Search for value in a binary search tree
+ * @param value - value to search for
+ * @param tree - binary search tree to look for value in
+ * @returns returns null if value not found, otherwise returns value
+ */
+export function search (value: any, tree: BinarySearchTree): any {
+  if (!tree.root) return null
+
+  let currentNode: BinarySearchTreeNode = tree.root
+
+  while (currentNode) {
+    const comparison: number = tree.comparator(value, currentNode.value)
+
+    if (comparison === 0) return currentNode.value
+    if (comparison === -1) {
+      if (!currentNode.left) return null
+      currentNode = currentNode.left
+    } else {
+      if (!currentNode.right) return null
+      currentNode = currentNode.right
+    }
+  }
+}

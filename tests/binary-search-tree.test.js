@@ -4,7 +4,8 @@ import {
   defaultComparator,
   getMax,
   getMin,
-  insert
+  insert,
+  search
 } from '../src/binary-search-tree'
 
 describe('binary search tree', () => {
@@ -214,13 +215,14 @@ describe('binary search tree', () => {
 
   describe('insert()', () => {
     describe('when preventDuplicates is false', () => {
-      describe('when tree has no root', () => {
+      describe('when tree has no root node', () => {
         let result, tree
 
         beforeEach(() => {
           tree = {
             comparator: defaultComparator,
-            preventDuplicates: false
+            preventDuplicates: false,
+            root: null
           }
 
           result = insert(1, tree)
@@ -625,13 +627,14 @@ describe('binary search tree', () => {
     })
 
     describe('when preventDuplicates is true', () => {
-      describe('when tree has no root', () => {
+      describe('when tree has no root node', () => {
         let result, tree
 
         beforeEach(() => {
           tree = {
             comparator: defaultComparator,
-            preventDuplicates: true
+            preventDuplicates: true,
+            root: null
           }
 
           result = insert(1, tree)
@@ -944,6 +947,86 @@ describe('binary search tree', () => {
             })
           })
         })
+      })
+    })
+  })
+
+  describe('search()', () => {
+    describe('when tree has no root node', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: null
+        })
+
+        result = search(1, tree)
+      })
+
+      it('returns null', () => {
+        expect(result).toBe(null)
+      })
+    })
+
+    describe('when tree has root node with no child nodes', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: null,
+            right: null,
+            value: 2
+          })
+        })
+      })
+
+      it('returns null when value is not root node value', () => {
+        expect(search(1, tree)).toBe(null)
+      })
+
+      it('returns value when value is root node value', () => {
+        expect(search(2, tree)).toBe(2)
+      })
+    })
+
+    describe('when tree has root node with child nodes', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: Object.freeze({
+              left: null,
+              right: null,
+              value: 1
+            }),
+            right: Object.freeze({
+              left: null,
+              right: null,
+              value: 3
+            }),
+            value: 2
+          })
+        })
+      })
+
+      it('returns null when value is not in tree', () => {
+        expect(search(4, tree)).toBe(null)
+      })
+
+      it('returns value when value is in left child node', () => {
+        expect(search(1, tree)).toBe(1)
+      })
+
+      it('returns value when value is in right child node', () => {
+        expect(search(3, tree)).toBe(3)
       })
     })
   })
