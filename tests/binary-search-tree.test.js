@@ -2,8 +2,10 @@ import {
   createNode,
   createTree,
   defaultComparator,
-  getMax,
-  getMin,
+  deleteMax,
+  deleteMin,
+  findMax,
+  findMin,
   insert,
   search
 } from '../src/binary-search-tree'
@@ -93,7 +95,535 @@ describe('binary search tree', () => {
     })
   })
 
-  describe('getMax()', () => {
+  describe('deleteMax()', () => {
+    it('it returns tree when no nodes', () => {
+      const tree = Object.freeze({
+        comparator: defaultComparator,
+        preventDuplicates: false,
+        root: null
+      })
+
+      expect(deleteMax(tree)).toBe(tree)
+    })
+
+    describe('when root node contains max value and is only node', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: null,
+            right: null,
+            value: 2
+          })
+        })
+
+        result = deleteMax(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: null
+        })
+      })
+    })
+
+    describe('when root node contains max value and is not only node', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: Object.freeze({
+              left: null,
+              right: null,
+              value: 1
+            }),
+            right: null,
+            value: 2
+          })
+        })
+
+        result = deleteMax(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: {
+            left: null,
+            right: null,
+            value: 1
+          }
+        })
+      })
+    })
+
+    describe('when child node is max value with no children', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: null,
+            right: Object.freeze({
+              left: null,
+              right: null,
+              value: 2
+            }),
+            value: 1
+          })
+        })
+
+        result = deleteMax(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: {
+            left: null,
+            right: null,
+            value: 1
+          }
+        })
+      })
+    })
+
+    describe('when child node is max value with left child', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: null,
+            right: Object.freeze({
+              left: Object.freeze({
+                left: null,
+                right: null,
+                value: 2
+              }),
+              right: null,
+              value: 3
+            }),
+            value: 1
+          })
+        })
+
+        result = deleteMax(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: {
+            left: null,
+            right: {
+              left: null,
+              right: null,
+              value: 2
+            },
+            value: 1
+          }
+        })
+      })
+    })
+
+    describe('when nested child node is max value with no children', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: null,
+            right: Object.freeze({
+              left: null,
+              right: Object.freeze({
+                left: null,
+                right: null,
+                value: 3
+              }),
+              value: 2
+            }),
+            value: 1
+          })
+        })
+
+        result = deleteMax(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: {
+            left: null,
+            right: {
+              left: null,
+              right: null,
+              value: 2
+            },
+            value: 1
+          }
+        })
+      })
+    })
+
+    describe('when nested child node is max value with left child', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: null,
+            right: Object.freeze({
+              left: null,
+              right: Object.freeze({
+                left: Object.freeze({
+                  left: null,
+                  right: null,
+                  value: 3
+                }),
+                right: null,
+                value: 4
+              }),
+              value: 2
+            }),
+            value: 1
+          })
+        })
+
+        result = deleteMax(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: {
+            left: null,
+            right: {
+              left: null,
+              right: {
+                left: null,
+                right: null,
+                value: 3
+              },
+              value: 2
+            },
+            value: 1
+          }
+        })
+      })
+    })
+  })
+
+  describe('deleteMin()', () => {
+    it('it returns tree when no nodes', () => {
+      const tree = Object.freeze({
+        comparator: defaultComparator,
+        preventDuplicates: false,
+        root: null
+      })
+
+      expect(deleteMin(tree)).toBe(tree)
+    })
+
+    describe('when root node contains min value and is only node', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: null,
+            right: null,
+            value: 2
+          })
+        })
+
+        result = deleteMin(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: null
+        })
+      })
+    })
+
+    describe('when root node contains min value and is not only node', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: null,
+            right: Object.freeze({
+              left: null,
+              right: null,
+              value: 3
+            }),
+            value: 2
+          })
+        })
+
+        result = deleteMin(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: {
+            left: null,
+            right: null,
+            value: 3
+          }
+        })
+      })
+    })
+
+    describe('when child node is min value with no children', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: Object.freeze({
+              left: null,
+              right: null,
+              value: 1
+            }),
+            right: null,
+            value: 2
+          })
+        })
+
+        result = deleteMin(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: {
+            left: null,
+            right: null,
+            value: 2
+          }
+        })
+      })
+    })
+
+    describe('when child node is min value with right child', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: Object.freeze({
+              left: null,
+              right: Object.freeze({
+                left: null,
+                right: null,
+                value: 2
+              }),
+              value: 1
+            }),
+            right: null,
+            value: 3
+          })
+        })
+
+        result = deleteMin(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: {
+            left: {
+              left: null,
+              right: null,
+              value: 2
+            },
+            right: null,
+            value: 3
+          }
+        })
+      })
+    })
+
+    describe('when nested child node is min value with no children', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: Object.freeze({
+              left: Object.freeze({
+                left: null,
+                right: null,
+                value: 1
+              }),
+              right: null,
+              value: 2
+            }),
+            right: null,
+            value: 3
+          })
+        })
+
+        result = deleteMin(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: {
+            left: {
+              left: null,
+              right: null,
+              value: 2
+            },
+            right: null,
+            value: 3
+          }
+        })
+      })
+    })
+
+    describe('when nested child node is min value with right child', () => {
+      let result, tree
+
+      beforeEach(() => {
+        tree = Object.freeze({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: Object.freeze({
+            left: Object.freeze({
+              left: Object.freeze({
+                left: null,
+                right: Object.freeze({
+                  left: null,
+                  right: null,
+                  value: 2
+                }),
+                value: 1
+              }),
+              right: null,
+              value: 3
+            }),
+            right: null,
+            value: 4
+          })
+        })
+
+        result = deleteMin(tree)
+      })
+
+      it('does not return original tree', () => {
+        expect(result).not.toBe(tree)
+      })
+
+      it('returns expected value', () => {
+        expect(result).toEqual({
+          comparator: defaultComparator,
+          preventDuplicates: false,
+          root: {
+            left: {
+              left: {
+                left: null,
+                right: null,
+                value: 2
+              },
+              right: null,
+              value: 3
+            },
+            right: null,
+            value: 4
+          }
+        })
+      })
+    })
+  })
+
+  describe('findMax()', () => {
     it('returns null when no nodes', () => {
       const tree = Object.freeze({
         comparator: defaultComparator,
@@ -101,7 +631,7 @@ describe('binary search tree', () => {
         root: null
       })
 
-      expect(getMax(tree)).toBe(null)
+      expect(findMax(tree)).toBe(null)
     })
 
     it('returns root node when root node contains max value', () => {
@@ -119,7 +649,7 @@ describe('binary search tree', () => {
         })
       })
 
-      expect(getMax(tree)).toBe(2)
+      expect(findMax(tree)).toBe(2)
     })
 
     it('returns right most node when child nodes present', () => {
@@ -149,11 +679,11 @@ describe('binary search tree', () => {
         })
       })
 
-      expect(getMax(tree)).toBe(5)
+      expect(findMax(tree)).toBe(5)
     })
   })
 
-  describe('getMin()', () => {
+  describe('findMin()', () => {
     it('returns null when no nodes', () => {
       const tree = Object.freeze({
         comparator: defaultComparator,
@@ -161,7 +691,7 @@ describe('binary search tree', () => {
         root: null
       })
 
-      expect(getMin(tree)).toBe(null)
+      expect(findMin(tree)).toBe(null)
     })
 
     it('returns root node when root node contains min value', () => {
@@ -179,7 +709,7 @@ describe('binary search tree', () => {
         })
       })
 
-      expect(getMax(tree)).toBe(2)
+      expect(findMax(tree)).toBe(2)
     })
 
     it('returns left most node when child nodes present', () => {
@@ -209,7 +739,7 @@ describe('binary search tree', () => {
         })
       })
 
-      expect(getMin(tree)).toBe(1)
+      expect(findMin(tree)).toBe(1)
     })
   })
 

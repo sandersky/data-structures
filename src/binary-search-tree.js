@@ -56,11 +56,81 @@ export function defaultComparator (a: any, b: any): number {
 }
 
 /**
+ * Delete maximum value in binary search tree
+ * @param tree - binary search tree
+ * @returns new tree
+ */
+export function deleteMax (tree: BinarySearchTree): BinarySearchTree {
+  if (!tree.root) return tree
+
+  const newTree: BinarySearchTree = Object.assign({}, tree) // Shallow clone to keep pure
+
+  newTree.root = Object.assign({}, newTree.root) // Shallow clone to keep pure
+
+  if (!newTree.root.right) {
+    newTree.root = newTree.root.left
+    return newTree
+  }
+
+  let currentNode: BinarySearchTreeNode | null = newTree.root.right
+  let parentNode: BinarySearchTreeNode = newTree.root
+
+  while (currentNode && currentNode.right) {
+    parentNode.right = Object.assign({}, currentNode) // Shallow clone to keep pure
+    parentNode = parentNode.right
+    currentNode = currentNode.right
+  }
+
+  if (currentNode && currentNode.left) {
+    parentNode.right = currentNode.left
+  } else {
+    parentNode.right = null
+  }
+
+  return newTree
+}
+
+/**
+ * Delete minimum value in binary search tree
+ * @param tree - binary search tree
+ * @returns new tree
+ */
+export function deleteMin (tree: BinarySearchTree): BinarySearchTree {
+  if (!tree.root) return tree
+
+  const newTree: BinarySearchTree = Object.assign({}, tree) // Shallow clone to keep pure
+
+  newTree.root = Object.assign({}, newTree.root) // Shallow clone to keep pure
+
+  if (!newTree.root.left) {
+    newTree.root = newTree.root.right
+    return newTree
+  }
+
+  let currentNode: BinarySearchTreeNode | null = newTree.root.left
+  let parentNode: BinarySearchTreeNode = newTree.root
+
+  while (currentNode && currentNode.left) {
+    parentNode.left = Object.assign({}, currentNode) // Shallow clone to keep pure
+    parentNode = parentNode.left
+    currentNode = currentNode.left
+  }
+
+  if (currentNode && currentNode.right) {
+    parentNode.left = currentNode.right
+  } else {
+    parentNode.left = null
+  }
+
+  return newTree
+}
+
+/**
  * Get maximum value in binary search tree
  * @param tree - binary search tree
  * @returns maximum value in tree
  */
-export function getMax (tree: BinarySearchTree): any {
+export function findMax (tree: BinarySearchTree): any {
   if (!tree.root) return null
   let currentNode: BinarySearchTreeNode = tree.root
   while (currentNode.right) currentNode = currentNode.right
@@ -72,7 +142,7 @@ export function getMax (tree: BinarySearchTree): any {
  * @param tree - binary search tree
  * @returns minimum value in tree
  */
-export function getMin (tree: BinarySearchTree): any {
+export function findMin (tree: BinarySearchTree): any {
   if (!tree.root) return null
   let currentNode: BinarySearchTreeNode = tree.root
   while (currentNode.left) currentNode = currentNode.left
