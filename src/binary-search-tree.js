@@ -1,29 +1,28 @@
-/**
- * @typedef {Object} BinarySearchTree
- * @property {Function} [comparator] - function for comparing two values
- * @property {Boolean} [preventDuplicates=false] - prevent duplicate values in tree
- * @property {BinarySearchTreeNode} [root=null] - root node
- */
+/* @flow */
 
-/**
- * @typedef {Object} BinarySearchTreeOptions
- * @property {Function} [comparator] - function for comparing two values
- * @property {Boolean} [preventDuplicates] - prevent duplicate values in tree
- */
+type BinarySearchTree = {
+  comparator: Function, // function for comparing two values
+  preventDuplicates: boolean, // prevent duplicate values in tree
+  root: BinarySearchTreeNode | null // root node
+}
 
-/**
- * @typedef {Object} BinarySearchTreeNode
- * @property {BinarySearchTreeNode} [left=null] - left node
- * @property {BinarySearchTreeNode} [right=null] - right node
- * @property {*} value - value at node
- */
+type BinarySearchTreeNode = {
+  left: BinarySearchTreeNode | null, // left node
+  right: BinarySearchTreeNode | null, // right node
+  value: any // value of node
+}
+
+type BinarySearchTreeOptions = {
+  comparator?: Function, // function for comparing two values
+  preventDuplicates?: boolean // prevent duplicate values in tree
+}
 
 /**
  * Create a binary search tree node
- * @param {*} value - value at node
- * @returns {BinarySearchTreeNode} node
+ * @param value - value at node
+ * @returns node
  */
-export function createNode (value) {
+export function createNode (value: any): BinarySearchTreeNode {
   return {
     left: null,
     right: null,
@@ -33,10 +32,10 @@ export function createNode (value) {
 
 /**
  * Create a binary search tree
- * @param {BinarySearchTreeOptions} options - options
- * @returns {BinarySearchTree} binary search tree
+ * @param options - options
+ * @returns binary search tree
  */
-export function createTree (options = {}) {
+export function createTree (options: BinarySearchTreeOptions = {}): BinarySearchTree {
   return {
     comparator: options.comparator || defaultComparator,
     preventDuplicates: Boolean(options.preventDuplicates),
@@ -46,11 +45,11 @@ export function createTree (options = {}) {
 
 /**
  * Default value comparison method that simply uses === and < for comparison
- * @param {*} a - first value
- * @param {*} b - second value
- * @returns {Number} returns -1 if a is less than b, 0 if they are the same, and 1 if a is greater than b
+ * @param a - first value
+ * @param b - second value
+ * @returns returns -1 if a is less than b, 0 if they are the same, and 1 if a is greater than b
  */
-export function defaultComparator (a, b) {
+export function defaultComparator (a: any, b: any): number {
   if (a === b) return 0
   if (a < b) return -1
   return 1
@@ -58,10 +57,10 @@ export function defaultComparator (a, b) {
 
 /**
  * Get maximum value in binary search tree
- * @param {BinarySearchTree} tree - binary search tree
- * @returns {*} maximum value in tree
+ * @param tree - binary search tree
+ * @returns maximum value in tree
  */
-export function getMax (tree) {
+export function getMax (tree: BinarySearchTree): any {
   if (!tree.root) return null
   let currentNode = tree.root
   while (currentNode.right) currentNode = currentNode.right
@@ -70,10 +69,10 @@ export function getMax (tree) {
 
 /**
  * Get minimum value in binary search tree
- * @param {BinarySearchTree} tree - binary search tree
- * @returns {*} minimum value in tree
+ * @param tree - binary search tree
+ * @returns minimum value in tree
  */
-export function getMin (tree) {
+export function getMin (tree: BinarySearchTree): any {
   if (!tree.root) return null
   let currentNode = tree.root
   while (currentNode.left) currentNode = currentNode.left
@@ -82,11 +81,11 @@ export function getMin (tree) {
 
 /**
  * Add a value to a binary search tree
- * @param {*} value - value to add to tree
- * @param {BinarySearchTree} tree - tree to add value to
- * @returns {BinarySearchTree} new tree
+ * @param value - value to add to tree
+ * @param tree - tree to add value to
+ * @returns new tree
  */
-export function insert (value, tree) {
+export function insert (value: any, tree: BinarySearchTree): BinarySearchTree {
   const newNode = createNode(value)
   const newTree = Object.assign({}, tree) // Shallow clone tree to keep function pure
 
