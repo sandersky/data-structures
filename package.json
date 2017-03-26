@@ -5,13 +5,19 @@
   "main": "binary-search-tree.js",
   "scripts": {
     "build": "babel src -d lib --presets es2015 --plugins add-module-exports",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest -c jest.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sandersky/immutable-data-structures.git"
   },
   "author": "Matthew Dahl (https://github.com/sandersky)",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.24.0",
+    "babel-jest": "^19.0.0",
     "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-es2015": "^6.24.0"
+    "babel-preset-es2015": "^6.24.0",
+    "jest": "^19.0.2"
   }
 }
