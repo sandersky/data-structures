@@ -62,7 +62,7 @@ export function defaultComparator (a: any, b: any): number {
  */
 export function getMax (tree: BinarySearchTree): any {
   if (!tree.root) return null
-  let currentNode = tree.root
+  let currentNode: BinarySearchTreeNode = tree.root
   while (currentNode.right) currentNode = currentNode.right
   return currentNode.value
 }
@@ -74,7 +74,7 @@ export function getMax (tree: BinarySearchTree): any {
  */
 export function getMin (tree: BinarySearchTree): any {
   if (!tree.root) return null
-  let currentNode = tree.root
+  let currentNode: BinarySearchTreeNode = tree.root
   while (currentNode.left) currentNode = currentNode.left
   return currentNode.value
 }
@@ -86,8 +86,8 @@ export function getMin (tree: BinarySearchTree): any {
  * @returns new tree
  */
 export function insert (value: any, tree: BinarySearchTree): BinarySearchTree {
-  const newNode = createNode(value)
-  const newTree = Object.assign({}, tree) // Shallow clone tree to keep function pure
+  const newNode: BinarySearchTreeNode = createNode(value)
+  const newTree: BinarySearchTree = Object.assign({}, tree) // Shallow clone tree to keep function pure
 
   // If tree has no values then we can just set the new value as the root node
   if (!tree.root) {
@@ -96,10 +96,10 @@ export function insert (value: any, tree: BinarySearchTree): BinarySearchTree {
     })
   }
 
-  let currentNode = newTree.root = Object.assign({}, newTree.root) // Shallow clone to keep pure
+  let currentNode: BinarySearchTreeNode = newTree.root = Object.assign({}, newTree.root) // Shallow clone to keep pure
 
   while (currentNode) {
-    const comparison = tree.comparator(value, currentNode.value)
+    const comparison: number = tree.comparator(value, currentNode.value)
 
     if (tree.preventDuplicates && comparison === 0) return tree
 
