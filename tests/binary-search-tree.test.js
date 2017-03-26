@@ -1,14 +1,218 @@
 import {
-  addValueToBinarySearchTree,
-  createBinarySearchTree,
-  createBinarySearchTreeNode,
+  createNode,
+  createTree,
   defaultComparator,
-  getMaxBinarySearchTreeValue,
-  getMinBinarySearchTreeValue
+  getMax,
+  getMin,
+  insert
 } from '../src/binary-search-tree'
 
 describe('binary search tree', () => {
-  describe('addValueToBinarySearchTree()', () => {
+  it('createNode() returns expected value', () => {
+    expect(createNode(3)).toEqual({
+      left: null,
+      right: null,
+      value: 3
+    })
+  })
+
+  describe('createTree()', () => {
+    it('returns defaults when no options specified', () => {
+      expect(createTree()).toEqual({
+        comparator: defaultComparator,
+        preventDuplicates: false,
+        root: null
+      })
+    })
+
+    it('returns expected value when custom comparator passed into options', () => {
+      const options = {
+        comparator () {}
+      }
+
+      expect(createTree(options)).toEqual({
+        comparator: options.comparator,
+        preventDuplicates: false,
+        root: null
+      })
+    })
+
+    it('returns expected value when preventDuplicates set to true in options', () => {
+      const options = {
+        preventDuplicates: true
+      }
+
+      expect(createTree(options)).toEqual({
+        comparator: defaultComparator,
+        preventDuplicates: true,
+        root: null
+      })
+    })
+
+    it('returns expected value when preventDuplicates set to false in options', () => {
+      const options = {
+        preventDuplicates: false
+      }
+
+      expect(createTree(options)).toEqual({
+        comparator: defaultComparator,
+        preventDuplicates: false,
+        root: null
+      })
+    })
+  })
+
+  describe('defaultComparator()', () => {
+    describe('numeric values', () => {
+      it('returns -1 when a is less than b', () => {
+        expect(defaultComparator(1, 2)).toBe(-1)
+      })
+
+      it('returns 0 when a is equal to b', () => {
+        expect(defaultComparator(1, 1)).toBe(0)
+      })
+
+      it('returns 1 when a is greater than b', () => {
+        expect(defaultComparator(2, 1)).toBe(1)
+      })
+    })
+
+    describe('string values', () => {
+      it('returns -1 when a is less than b', () => {
+        expect(defaultComparator('a', 'b')).toBe(-1)
+      })
+
+      it('returns 0 when a is equal to b', () => {
+        expect(defaultComparator('a', 'a')).toBe(0)
+      })
+
+      it('returns 1 when a is greater than b', () => {
+        expect(defaultComparator('b', 'a')).toBe(1)
+      })
+    })
+  })
+
+  describe('getMax()', () => {
+    it('returns null when no nodes', () => {
+      const tree = Object.freeze({
+        comparator: defaultComparator,
+        preventDuplicates: false,
+        root: null
+      })
+
+      expect(getMax(tree)).toBe(null)
+    })
+
+    it('returns root node when root node contains max value', () => {
+      const tree = Object.freeze({
+        comparator: defaultComparator,
+        preventDuplicates: false,
+        root: Object.freeze({
+          left: Object.freeze({
+            left: null,
+            right: null,
+            value: 1
+          }),
+          right: null,
+          value: 2
+        })
+      })
+
+      expect(getMax(tree)).toBe(2)
+    })
+
+    it('returns right most node when child nodes present', () => {
+      const tree = Object.freeze({
+        comparator: defaultComparator,
+        preventDuplicates: false,
+        root: Object.freeze({
+          left: Object.freeze({
+            left: null,
+            right: null,
+            value: 1
+          }),
+          right: Object.freeze({
+            left: Object.freeze({
+              left: null,
+              right: null,
+              value: 3
+            }),
+            right: Object.freeze({
+              left: null,
+              right: null,
+              value: 5
+            }),
+            value: 4
+          }),
+          value: 2
+        })
+      })
+
+      expect(getMax(tree)).toBe(5)
+    })
+  })
+
+  describe('getMin()', () => {
+    it('returns null when no nodes', () => {
+      const tree = Object.freeze({
+        comparator: defaultComparator,
+        preventDuplicates: false,
+        root: null
+      })
+
+      expect(getMin(tree)).toBe(null)
+    })
+
+    it('returns root node when root node contains min value', () => {
+      const tree = Object.freeze({
+        comparator: defaultComparator,
+        preventDuplicates: false,
+        root: Object.freeze({
+          left: null,
+          right: Object.freeze({
+            left: null,
+            right: null,
+            value: 2
+          }),
+          value: 1
+        })
+      })
+
+      expect(getMax(tree)).toBe(2)
+    })
+
+    it('returns left most node when child nodes present', () => {
+      const tree = Object.freeze({
+        comparator: defaultComparator,
+        preventDuplicates: false,
+        root: Object.freeze({
+          left: Object.freeze({
+            left: Object.freeze({
+              left: null,
+              right: null,
+              value: 1
+            }),
+            right: Object.freeze({
+              left: null,
+              right: null,
+              value: 3
+            }),
+            value: 2
+          }),
+          right: Object.freeze({
+            left: null,
+            right: null,
+            value: 5
+          }),
+          value: 4
+        })
+      })
+
+      expect(getMin(tree)).toBe(1)
+    })
+  })
+
+  describe('insert()', () => {
     describe('when preventDuplicates is false', () => {
       describe('when tree has no root', () => {
         let result, tree
@@ -19,7 +223,7 @@ describe('binary search tree', () => {
             preventDuplicates: false
           }
 
-          result = addValueToBinarySearchTree(1, tree)
+          result = insert(1, tree)
         })
 
         it('does not return the original tree', () => {
@@ -58,7 +262,7 @@ describe('binary search tree', () => {
           let result
 
           beforeEach(() => {
-            result = addValueToBinarySearchTree(1, tree)
+            result = insert(1, tree)
           })
 
           it('does not return the original tree', () => {
@@ -86,7 +290,7 @@ describe('binary search tree', () => {
           let result
 
           beforeEach(() => {
-            result = addValueToBinarySearchTree(2, tree)
+            result = insert(2, tree)
           })
 
           it('does not return the original tree', () => {
@@ -114,7 +318,7 @@ describe('binary search tree', () => {
           let result
 
           beforeEach(() => {
-            result = addValueToBinarySearchTree(3, tree)
+            result = insert(3, tree)
           })
 
           it('does not return the original tree', () => {
@@ -167,7 +371,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(1, tree)
+              result = insert(1, tree)
             })
 
             it('does not return the original tree', () => {
@@ -203,7 +407,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(2, tree)
+              result = insert(2, tree)
             })
 
             it('does not return the original tree', () => {
@@ -239,7 +443,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(3, tree)
+              result = insert(3, tree)
             })
 
             it('does not return the original tree', () => {
@@ -276,7 +480,7 @@ describe('binary search tree', () => {
           let result
 
           beforeEach(() => {
-            result = addValueToBinarySearchTree(4, tree)
+            result = insert(4, tree)
           })
 
           it('does not return the original tree', () => {
@@ -313,7 +517,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(5, tree)
+              result = insert(5, tree)
             })
 
             it('does not return the original tree', () => {
@@ -349,7 +553,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(6, tree)
+              result = insert(6, tree)
             })
 
             it('does not return the original tree', () => {
@@ -385,7 +589,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(7, tree)
+              result = insert(7, tree)
             })
 
             it('does not return the original tree', () => {
@@ -430,7 +634,7 @@ describe('binary search tree', () => {
             preventDuplicates: true
           }
 
-          result = addValueToBinarySearchTree(1, tree)
+          result = insert(1, tree)
         })
 
         it('does not return the original tree', () => {
@@ -469,7 +673,7 @@ describe('binary search tree', () => {
           let result
 
           beforeEach(() => {
-            result = addValueToBinarySearchTree(1, tree)
+            result = insert(1, tree)
           })
 
           it('does not return the original tree', () => {
@@ -497,7 +701,7 @@ describe('binary search tree', () => {
           let result
 
           beforeEach(() => {
-            result = addValueToBinarySearchTree(2, tree)
+            result = insert(2, tree)
           })
 
           it('returns the original tree', () => {
@@ -509,7 +713,7 @@ describe('binary search tree', () => {
           let result
 
           beforeEach(() => {
-            result = addValueToBinarySearchTree(3, tree)
+            result = insert(3, tree)
           })
 
           it('does not return the original tree', () => {
@@ -562,7 +766,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(1, tree)
+              result = insert(1, tree)
             })
 
             it('does not return the original tree', () => {
@@ -598,7 +802,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(2, tree)
+              result = insert(2, tree)
             })
 
             it('returns the original tree', () => {
@@ -610,7 +814,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(3, tree)
+              result = insert(3, tree)
             })
 
             it('does not return the original tree', () => {
@@ -647,7 +851,7 @@ describe('binary search tree', () => {
           let result
 
           beforeEach(() => {
-            result = addValueToBinarySearchTree(4, tree)
+            result = insert(4, tree)
           })
 
           it('returns the original tree', () => {
@@ -660,7 +864,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(5, tree)
+              result = insert(5, tree)
             })
 
             it('does not return the original tree', () => {
@@ -696,7 +900,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(6, tree)
+              result = insert(6, tree)
             })
 
             it('returns the original tree', () => {
@@ -708,7 +912,7 @@ describe('binary search tree', () => {
             let result
 
             beforeEach(() => {
-              result = addValueToBinarySearchTree(7, tree)
+              result = insert(7, tree)
             })
 
             it('does not return the original tree', () => {
@@ -741,210 +945,6 @@ describe('binary search tree', () => {
           })
         })
       })
-    })
-  })
-
-  describe('createBinarySearchTree()', () => {
-    it('returns defaults when no options specified', () => {
-      expect(createBinarySearchTree()).toEqual({
-        comparator: defaultComparator,
-        preventDuplicates: false,
-        root: null
-      })
-    })
-
-    it('returns expected value when custom comparator passed into options', () => {
-      const options = {
-        comparator () {}
-      }
-
-      expect(createBinarySearchTree(options)).toEqual({
-        comparator: options.comparator,
-        preventDuplicates: false,
-        root: null
-      })
-    })
-
-    it('returns expected value when preventDuplicates set to true in options', () => {
-      const options = {
-        preventDuplicates: true
-      }
-
-      expect(createBinarySearchTree(options)).toEqual({
-        comparator: defaultComparator,
-        preventDuplicates: true,
-        root: null
-      })
-    })
-
-    it('returns expected value when preventDuplicates set to false in options', () => {
-      const options = {
-        preventDuplicates: false
-      }
-
-      expect(createBinarySearchTree(options)).toEqual({
-        comparator: defaultComparator,
-        preventDuplicates: false,
-        root: null
-      })
-    })
-  })
-
-  it('createBinarySearchTreeNode() returns expected value', () => {
-    expect(createBinarySearchTreeNode(3)).toEqual({
-      left: null,
-      right: null,
-      value: 3
-    })
-  })
-
-  describe('defaultComparator()', () => {
-    describe('numeric values', () => {
-      it('returns -1 when a is less than b', () => {
-        expect(defaultComparator(1, 2)).toBe(-1)
-      })
-
-      it('returns 0 when a is equal to b', () => {
-        expect(defaultComparator(1, 1)).toBe(0)
-      })
-
-      it('returns 1 when a is greater than b', () => {
-        expect(defaultComparator(2, 1)).toBe(1)
-      })
-    })
-
-    describe('string values', () => {
-      it('returns -1 when a is less than b', () => {
-        expect(defaultComparator('a', 'b')).toBe(-1)
-      })
-
-      it('returns 0 when a is equal to b', () => {
-        expect(defaultComparator('a', 'a')).toBe(0)
-      })
-
-      it('returns 1 when a is greater than b', () => {
-        expect(defaultComparator('b', 'a')).toBe(1)
-      })
-    })
-  })
-
-  describe('getMaxBinarySearchTreeValue()', () => {
-    it('returns null when no nodes', () => {
-      const tree = Object.freeze({
-        comparator: defaultComparator,
-        preventDuplicates: false,
-        root: null
-      })
-
-      expect(getMaxBinarySearchTreeValue(tree)).toBe(null)
-    })
-
-    it('returns root node when root node contains max value', () => {
-      const tree = Object.freeze({
-        comparator: defaultComparator,
-        preventDuplicates: false,
-        root: Object.freeze({
-          left: Object.freeze({
-            left: null,
-            right: null,
-            value: 1
-          }),
-          right: null,
-          value: 2
-        })
-      })
-
-      expect(getMaxBinarySearchTreeValue(tree)).toBe(2)
-    })
-
-    it('returns right most node when child nodes present', () => {
-      const tree = Object.freeze({
-        comparator: defaultComparator,
-        preventDuplicates: false,
-        root: Object.freeze({
-          left: Object.freeze({
-            left: null,
-            right: null,
-            value: 1
-          }),
-          right: Object.freeze({
-            left: Object.freeze({
-              left: null,
-              right: null,
-              value: 3
-            }),
-            right: Object.freeze({
-              left: null,
-              right: null,
-              value: 5
-            }),
-            value: 4
-          }),
-          value: 2
-        })
-      })
-
-      expect(getMaxBinarySearchTreeValue(tree)).toBe(5)
-    })
-  })
-
-  describe('getMinBinarySearchTreeValue()', () => {
-    it('returns null when no nodes', () => {
-      const tree = Object.freeze({
-        comparator: defaultComparator,
-        preventDuplicates: false,
-        root: null
-      })
-
-      expect(getMinBinarySearchTreeValue(tree)).toBe(null)
-    })
-
-    it('returns root node when root node contains min value', () => {
-      const tree = Object.freeze({
-        comparator: defaultComparator,
-        preventDuplicates: false,
-        root: Object.freeze({
-          left: null,
-          right: Object.freeze({
-            left: null,
-            right: null,
-            value: 2
-          }),
-          value: 1
-        })
-      })
-
-      expect(getMaxBinarySearchTreeValue(tree)).toBe(2)
-    })
-
-    it('returns left most node when child nodes present', () => {
-      const tree = Object.freeze({
-        comparator: defaultComparator,
-        preventDuplicates: false,
-        root: Object.freeze({
-          left: Object.freeze({
-            left: Object.freeze({
-              left: null,
-              right: null,
-              value: 1
-            }),
-            right: Object.freeze({
-              left: null,
-              right: null,
-              value: 3
-            }),
-            value: 2
-          }),
-          right: Object.freeze({
-            left: null,
-            right: null,
-            value: 5
-          }),
-          value: 4
-        })
-      })
-
-      expect(getMinBinarySearchTreeValue(tree)).toBe(1)
     })
   })
 })
