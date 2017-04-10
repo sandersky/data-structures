@@ -1,3 +1,5 @@
+var flowStripTypes = require('babel-plugin-transform-flow-strip-types')
+var objectAssign = require('babel-plugin-transform-object-assign')
 var path = require('path')
 
 module.exports = {
@@ -11,7 +13,8 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             plugins: [
-              require('babel-plugin-transform-flow-strip-types')
+              flowStripTypes,
+              objectAssign
             ]
           }
         }
