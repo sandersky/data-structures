@@ -977,6 +977,93 @@ describe('AVL tree', () => {
         })
       })
 
+      describe('deep insertion without rotation', () => {
+        let result, tree
+
+        beforeEach(() => {
+          tree = Object.freeze({
+            comparator: defaultComparator,
+            preventDuplicates: false,
+            root: Object.freeze({
+              height: 3,
+              left: Object.freeze({
+                height: 2,
+                left: Object.freeze({
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 1
+                }),
+                right: Object.freeze({
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 3
+                }),
+                value: 2
+              }),
+              right: Object.freeze({
+                height: 2,
+                left: Object.freeze({
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 5
+                }),
+                right: null,
+                value: 6
+              }),
+              value: 4
+            })
+          })
+
+          result = insert(7, tree)
+        })
+
+        it('returns expected value', () => {
+          expect(result).toEqual({
+            comparator: defaultComparator,
+            preventDuplicates: false,
+            root: {
+              height: 3,
+              left: {
+                height: 2,
+                left: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 1
+                },
+                right: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 3
+                },
+                value: 2
+              },
+              right: {
+                height: 2,
+                left: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 5
+                },
+                right: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 7
+                },
+                value: 6
+              },
+              value: 4
+            }
+          })
+        })
+      })
+
       describe('complex 1', () => {
         let result, tree
 
