@@ -976,6 +976,414 @@ describe('AVL tree', () => {
           })
         })
       })
+
+      describe('complex 1', () => {
+        let result, tree
+
+        beforeEach(() => {
+          tree = Object.freeze({
+            comparator: defaultComparator,
+            preventDuplicates: false,
+            root: Object.freeze({
+              height: 3,
+              left: Object.freeze({
+                height: 2,
+                left: Object.freeze({
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 3
+                }),
+                right: Object.freeze({
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 9
+                }),
+                value: 4
+              }),
+              right: Object.freeze({
+                height: 1,
+                left: null,
+                right: null,
+                value: 26
+              }),
+              value: 20
+            })
+          })
+
+          result = insert(15, tree)
+        })
+
+        it('returns expected value', () => {
+          expect(result).toEqual({
+            comparator: defaultComparator,
+            preventDuplicates: false,
+            root: {
+              height: 3,
+              left: {
+                height: 2,
+                left: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 3
+                },
+                right: null,
+                value: 4
+              },
+              right: {
+                height: 2,
+                left: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 15
+                },
+                right: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 26
+                },
+                value: 20
+              },
+              value: 9
+            }
+          })
+        })
+      })
+
+      describe('complex 2', () => {
+        let result, tree
+
+        beforeEach(() => {
+          tree = Object.freeze({
+            comparator: defaultComparator,
+            preventDuplicates: false,
+            root: Object.freeze({
+              height: 3,
+              left: Object.freeze({
+                height: 2,
+                left: Object.freeze({
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 3
+                }),
+                right: Object.freeze({
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 9
+                }),
+                value: 4
+              }),
+              right: Object.freeze({
+                height: 1,
+                left: null,
+                right: null,
+                value: 26
+              }),
+              value: 20
+            })
+          })
+
+          result = insert(8, tree)
+        })
+
+        it('returns expected value', () => {
+          expect(result).toEqual({
+            comparator: defaultComparator,
+            preventDuplicates: false,
+            root: {
+              height: 3,
+              left: {
+                height: 2,
+                left: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 3
+                },
+                right: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 8
+                },
+                value: 4
+              },
+              right: {
+                height: 2,
+                left: null,
+                right: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 26
+                },
+                value: 20
+              },
+              value: 9
+            }
+          })
+        })
+      })
+
+      describe('complex 3', () => {
+        let result, tree
+
+        beforeEach(() => {
+          tree = Object.freeze({
+            comparator: defaultComparator,
+            preventDuplicates: false,
+            root: Object.freeze({
+              height: 4,
+              left: Object.freeze({
+                height: 3,
+                left: Object.freeze({
+                  height: 2,
+                  left: Object.freeze({
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 2
+                  }),
+                  right: null,
+                  value: 3
+                }),
+                right: Object.freeze({
+                  height: 2,
+                  left: Object.freeze({
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 7
+                  }),
+                  right: Object.freeze({
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 11
+                  }),
+                  value: 9
+                }),
+                value: 4
+              }),
+              right: Object.freeze({
+                height: 2,
+                left: Object.freeze({
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 21
+                }),
+                right: Object.freeze({
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 30
+                }),
+                value: 26
+              }),
+              value: 20
+            })
+          })
+
+          result = insert(15, tree)
+        })
+
+        it('returns expected value', () => {
+          expect(result).toEqual({
+            comparator: defaultComparator,
+            preventDuplicates: false,
+            root: {
+              height: 4,
+              left: {
+                height: 3,
+                left: {
+                  height: 2,
+                  left: {
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 2
+                  },
+                  right: null,
+                  value: 3
+                },
+                right: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 7
+                },
+                value: 4
+              },
+              right: {
+                height: 3,
+                left: {
+                  height: 2,
+                  left: null,
+                  right: {
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 15
+                  },
+                  value: 11
+                },
+                right: {
+                  height: 2,
+                  left: {
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 21
+                  },
+                  right: {
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 30
+                  },
+                  value: 26
+                },
+                value: 20
+              },
+              value: 9
+            }
+          })
+        })
+      })
+
+      describe('complex 4', () => {
+        let result, tree
+
+        beforeEach(() => {
+          tree = Object.freeze({
+            comparator: defaultComparator,
+            preventDuplicates: false,
+            root: Object.freeze({
+              height: 4,
+              left: Object.freeze({
+                height: 3,
+                left: Object.freeze({
+                  height: 2,
+                  left: Object.freeze({
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 2
+                  }),
+                  right: null,
+                  value: 3
+                }),
+                right: Object.freeze({
+                  height: 2,
+                  left: Object.freeze({
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 7
+                  }),
+                  right: Object.freeze({
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 11
+                  }),
+                  value: 9
+                }),
+                value: 4
+              }),
+              right: Object.freeze({
+                height: 2,
+                left: Object.freeze({
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 21
+                }),
+                right: Object.freeze({
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 30
+                }),
+                value: 26
+              }),
+              value: 20
+            })
+          })
+
+          result = insert(8, tree)
+        })
+
+        it('returns expected value', () => {
+          expect(result).toEqual({
+            comparator: defaultComparator,
+            preventDuplicates: false,
+            root: {
+              height: 4,
+              left: {
+                height: 3,
+                left: {
+                  height: 2,
+                  left: {
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 2
+                  },
+                  right: null,
+                  value: 3
+                },
+                right: {
+                  height: 2,
+                  left: null,
+                  right: {
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 8
+                  },
+                  value: 7
+                },
+                value: 4
+              },
+              right: {
+                height: 3,
+                left: {
+                  height: 1,
+                  left: null,
+                  right: null,
+                  value: 11
+                },
+                right: {
+                  height: 2,
+                  left: {
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 21
+                  },
+                  right: {
+                    height: 1,
+                    left: null,
+                    right: null,
+                    value: 30
+                  },
+                  value: 26
+                },
+                value: 20
+              },
+              value: 9
+            }
+          })
+        })
+      })
     })
 
     describe('when preventDuplicates is true', () => {
