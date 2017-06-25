@@ -1,6 +1,7 @@
 var flowStripTypes = require('babel-plugin-transform-flow-strip-types')
 var objectAssign = require('babel-plugin-transform-object-assign')
 var path = require('path')
+var webpack = require('webpack')
 
 module.exports = {
   entry: path.join(__dirname, 'src', 'index.js'),
@@ -26,5 +27,8 @@ module.exports = {
     library: 'ImmutableDataStructures',
     libraryTarget: 'umd',
     path: path.join(__dirname, 'dist')
-  }
+  },
+  plugins: [
+     new webpack.optimize.ModuleConcatenationPlugin()
+  ]
 }
